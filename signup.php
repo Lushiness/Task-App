@@ -1,16 +1,13 @@
 <?php
 include "connect.php";
 include "mail.php";
-// Always set JSON header when handling AJAX
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     header('Content-Type: application/json');
-
-    // Get form data
+    
     $name     = trim($_POST['name']);
     $email    = trim($_POST['email']);
     $password = $_POST['password'];
 
-    // Check if email already exists
     $check_email = $conn->prepare("SELECT id FROM users WHERE email = ?");
     $check_email->bind_param("s", $email);
     $check_email->execute();
@@ -24,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     }
     $check_email->close();
 
-    // Hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert user
@@ -46,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
     }
 }
 
-// If not POST or missing `register`, fall back to HTML page
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -89,3 +84,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
 
 </body>
 </html>
+
